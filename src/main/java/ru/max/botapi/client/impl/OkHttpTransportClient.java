@@ -20,13 +20,10 @@
 
 package ru.max.botapi.client.impl;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.invoke.MethodHandles;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
@@ -108,7 +105,13 @@ public class OkHttpTransportClient implements MaxTransportClient {
         Objects.requireNonNull(file, "inputStream must not be null");
         LOG.info("Started uploading to url {}", url);
 
-        String filename = file.getName();
+        String filename;
+        try {
+            filename = URLEncoder.encode(file.getName(), StandardCharsets.UTF_8.name());
+        } catch (Exception e) {
+            filename = file.getName();
+        }
+
         long total = file.length();
         Future<ClientResponse> response = null;
 
