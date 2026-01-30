@@ -107,7 +107,8 @@ public class OkHttpTransportClient implements MaxTransportClient {
 
         String filename;
         try {
-            filename = URLEncoder.encode(file.getName(), StandardCharsets.UTF_8.name());
+            filename = URLEncoder.encode(file.getName(), StandardCharsets.UTF_8.name())
+                    .replace("+", "%20");
         } catch (Exception e) {
             filename = file.getName();
         }
