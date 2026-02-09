@@ -28,7 +28,7 @@ public class MaxServer {
                 return;
             }
 
-            String accessToken = request.queryParams("access_token");
+            String accessToken = request.headers("Authorization");
             if (!MaxService.ACCESS_TOKEN.equals(accessToken)) {
                 halt(401, "Invalid access token.");
             }
