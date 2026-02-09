@@ -27,23 +27,7 @@ import java.util.List;
 import org.junit.Test;
 
 import ru.max.botapi.TestBot;
-import ru.max.botapi.model.BotAddedToChatUpdate;
-import ru.max.botapi.model.BotRemovedFromChatUpdate;
-import ru.max.botapi.model.BotStartedUpdate;
-import ru.max.botapi.model.Callback;
-import ru.max.botapi.model.Chat;
-import ru.max.botapi.model.ChatTitleChangedUpdate;
-import ru.max.botapi.model.FailByDefaultUpdateVisitor;
-import ru.max.botapi.model.MessageCallbackUpdate;
-import ru.max.botapi.model.MessageChatCreatedUpdate;
-import ru.max.botapi.model.MessageCreatedUpdate;
-import ru.max.botapi.model.MessageEditedUpdate;
-import ru.max.botapi.model.MessageRemovedUpdate;
-import ru.max.botapi.model.Update;
-import ru.max.botapi.model.UpdateList;
-import ru.max.botapi.model.User;
-import ru.max.botapi.model.UserAddedToChatUpdate;
-import ru.max.botapi.model.UserRemovedFromChatUpdate;
+import ru.max.botapi.model.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -76,6 +60,8 @@ public class GetUpdatesQueryTest extends UnitTestBase {
                 user, false, System.currentTimeMillis());
         BotStartedUpdate botStartedUpdate = new BotStartedUpdate(ID_COUNTER.incrementAndGet(),
                 user, System.currentTimeMillis());
+        BotStoppedUpdate botStoppedUpdate = new BotStoppedUpdate(ID_COUNTER.incrementAndGet(),
+                user, System.currentTimeMillis());
         ChatTitleChangedUpdate chatTitleChangedUpdate = new ChatTitleChangedUpdate(ID_COUNTER.incrementAndGet(),
                 user, "title", System.currentTimeMillis());
         MessageChatCreatedUpdate messageChatCreatedUpdate = new MessageChatCreatedUpdate(randomChat(), "mId", now);
@@ -90,6 +76,7 @@ public class GetUpdatesQueryTest extends UnitTestBase {
                 botAddedToChatUpdate,
                 botRemovedFromChatUpdate,
                 botStartedUpdate,
+                botStoppedUpdate,
                 chatTitleChangedUpdate,
                 messageChatCreatedUpdate
         );
@@ -152,6 +139,11 @@ public class GetUpdatesQueryTest extends UnitTestBase {
                 @Override
                 public void visit(BotStartedUpdate model) {
                     assertThat(model, is(botStartedUpdate));
+                }
+
+                @Override
+                public void visit(BotStoppedUpdate model) {
+                    assertThat(model, is(botStoppedUpdate));
                 }
 
                 @Override

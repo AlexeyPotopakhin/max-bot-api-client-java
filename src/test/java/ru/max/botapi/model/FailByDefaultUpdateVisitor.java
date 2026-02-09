@@ -58,6 +58,11 @@ public class FailByDefaultUpdateVisitor implements Update.Visitor {
     }
 
     @Override
+    public void visit(BotStoppedUpdate model) {
+        fail(model);
+    }
+
+    @Override
     public void visit(ChatTitleChangedUpdate model) {
         fail(model);
     }

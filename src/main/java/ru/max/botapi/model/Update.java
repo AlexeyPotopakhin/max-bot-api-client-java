@@ -46,6 +46,7 @@ import javax.validation.constraints.NotNull;
   @JsonSubTypes.Type(value = UserAddedToChatUpdate.class, name = Update.USER_ADDED),
   @JsonSubTypes.Type(value = UserRemovedFromChatUpdate.class, name = Update.USER_REMOVED),
   @JsonSubTypes.Type(value = BotStartedUpdate.class, name = Update.BOT_STARTED),
+  @JsonSubTypes.Type(value = BotStoppedUpdate.class, name = Update.BOT_STOPPED),
   @JsonSubTypes.Type(value = ChatTitleChangedUpdate.class, name = Update.CHAT_TITLE_CHANGED),
   @JsonSubTypes.Type(value = MessageChatCreatedUpdate.class, name = Update.MESSAGE_CHAT_CREATED),
 })
@@ -60,6 +61,7 @@ public class Update implements MaxSerializable {
     public static final String USER_ADDED = "user_added";
     public static final String USER_REMOVED = "user_removed";
     public static final String BOT_STARTED = "bot_started";
+    public static final String BOT_STOPPED = "bot_stopped";
     public static final String CHAT_TITLE_CHANGED = "chat_title_changed";
     public static final String MESSAGE_CHAT_CREATED = "message_chat_created";
     public static final Set<String> TYPES = new HashSet<>(Arrays.asList(
@@ -71,7 +73,8 @@ public class Update implements MaxSerializable {
         BOT_REMOVED, 
         USER_ADDED, 
         USER_REMOVED, 
-        BOT_STARTED, 
+        BOT_STARTED,
+        BOT_STOPPED,
         CHAT_TITLE_CHANGED, 
         MESSAGE_CHAT_CREATED
     ));
@@ -145,6 +148,7 @@ public class Update implements MaxSerializable {
         void visit(UserAddedToChatUpdate model);
         void visit(UserRemovedFromChatUpdate model);
         void visit(BotStartedUpdate model);
+        void visit(BotStoppedUpdate model);
         void visit(ChatTitleChangedUpdate model);
         void visit(MessageChatCreatedUpdate model);
         void visitDefault(Update model);
@@ -160,6 +164,7 @@ public class Update implements MaxSerializable {
         T map(UserAddedToChatUpdate model);
         T map(UserRemovedFromChatUpdate model);
         T map(BotStartedUpdate model);
+        T map(BotStoppedUpdate model);
         T map(ChatTitleChangedUpdate model);
         T map(MessageChatCreatedUpdate model);
         T mapDefault(Update model);

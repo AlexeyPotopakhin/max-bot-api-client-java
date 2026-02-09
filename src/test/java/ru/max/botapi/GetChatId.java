@@ -1,17 +1,6 @@
 package ru.max.botapi;
 
-import ru.max.botapi.model.BotAddedToChatUpdate;
-import ru.max.botapi.model.BotRemovedFromChatUpdate;
-import ru.max.botapi.model.BotStartedUpdate;
-import ru.max.botapi.model.ChatTitleChangedUpdate;
-import ru.max.botapi.model.MessageCallbackUpdate;
-import ru.max.botapi.model.MessageChatCreatedUpdate;
-import ru.max.botapi.model.MessageCreatedUpdate;
-import ru.max.botapi.model.MessageEditedUpdate;
-import ru.max.botapi.model.MessageRemovedUpdate;
-import ru.max.botapi.model.Update;
-import ru.max.botapi.model.UserAddedToChatUpdate;
-import ru.max.botapi.model.UserRemovedFromChatUpdate;
+import ru.max.botapi.model.*;
 
 
 public class GetChatId implements Update.Mapper<Long> {
@@ -59,6 +48,11 @@ public class GetChatId implements Update.Mapper<Long> {
 
     @Override
     public Long map(BotStartedUpdate model) {
+        return model.getChatId();
+    }
+
+    @Override
+    public Long map(BotStoppedUpdate model) {
         return model.getChatId();
     }
 

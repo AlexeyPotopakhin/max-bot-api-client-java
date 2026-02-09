@@ -56,6 +56,11 @@ public class DefaultUpdateMapper<T> implements Update.Mapper<T> {
     }
 
     @Override
+    public T map(BotStoppedUpdate model) {
+        return mapDefault(model);
+    }
+
+    @Override
     public T map(ChatTitleChangedUpdate model) {
         return mapDefault(model);
     }

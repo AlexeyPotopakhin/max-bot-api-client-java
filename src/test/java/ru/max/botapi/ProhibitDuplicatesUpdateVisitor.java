@@ -3,17 +3,7 @@ package ru.max.botapi;
 import java.util.HashSet;
 import java.util.Set;
 
-import ru.max.botapi.model.BotAddedToChatUpdate;
-import ru.max.botapi.model.BotRemovedFromChatUpdate;
-import ru.max.botapi.model.BotStartedUpdate;
-import ru.max.botapi.model.ChatTitleChangedUpdate;
-import ru.max.botapi.model.MessageCallbackUpdate;
-import ru.max.botapi.model.MessageCreatedUpdate;
-import ru.max.botapi.model.MessageEditedUpdate;
-import ru.max.botapi.model.MessageRemovedUpdate;
-import ru.max.botapi.model.Update;
-import ru.max.botapi.model.UserAddedToChatUpdate;
-import ru.max.botapi.model.UserRemovedFromChatUpdate;
+import ru.max.botapi.model.*;
 
 import static org.junit.Assert.fail;
 
@@ -75,6 +65,12 @@ public class ProhibitDuplicatesUpdateVisitor extends DelegatingUpdateVisitor {
 
     @Override
     public void visit(BotStartedUpdate model) {
+        saveAndCheck(model);
+        super.visit(model);
+    }
+
+    @Override
+    public void visit(BotStoppedUpdate model) {
         saveAndCheck(model);
         super.visit(model);
     }

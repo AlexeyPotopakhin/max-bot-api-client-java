@@ -1,17 +1,6 @@
 package ru.max.botapi;
 
-import ru.max.botapi.model.BotAddedToChatUpdate;
-import ru.max.botapi.model.BotRemovedFromChatUpdate;
-import ru.max.botapi.model.BotStartedUpdate;
-import ru.max.botapi.model.ChatTitleChangedUpdate;
-import ru.max.botapi.model.MessageCallbackUpdate;
-import ru.max.botapi.model.MessageChatCreatedUpdate;
-import ru.max.botapi.model.MessageCreatedUpdate;
-import ru.max.botapi.model.MessageEditedUpdate;
-import ru.max.botapi.model.MessageRemovedUpdate;
-import ru.max.botapi.model.Update;
-import ru.max.botapi.model.UserAddedToChatUpdate;
-import ru.max.botapi.model.UserRemovedFromChatUpdate;
+import ru.max.botapi.model.*;
 
 
 public class DelegatingUpdateVisitor implements Update.Visitor {
@@ -68,6 +57,11 @@ public class DelegatingUpdateVisitor implements Update.Visitor {
 
     @Override
     public void visit(BotStartedUpdate model) {
+        delegate.visit(model);
+    }
+
+    @Override
+    public void visit(BotStoppedUpdate model) {
         delegate.visit(model);
     }
 

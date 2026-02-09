@@ -36,6 +36,8 @@ public class UpdateTest extends UnitTestBase {
             user, false, System.currentTimeMillis());
     BotStartedUpdate botStartedUpdate = new BotStartedUpdate(ID_COUNTER.incrementAndGet(),
             user, System.currentTimeMillis());
+    BotStoppedUpdate botStoppedUpdate = new BotStoppedUpdate(ID_COUNTER.incrementAndGet(),
+            user, System.currentTimeMillis());
     ChatTitleChangedUpdate chatTitleChangedUpdate = new ChatTitleChangedUpdate(ID_COUNTER.incrementAndGet(),
             user, "title", System.currentTimeMillis());
     MessageChatCreatedUpdate messageChatCreatedUpdate = new MessageChatCreatedUpdate(randomChat(), "mId", now);
@@ -81,6 +83,7 @@ public class UpdateTest extends UnitTestBase {
         assertThat(botRemovedFromChatUpdate.map(mapper).update, is(botRemovedFromChatUpdate));
         assertThat(botAddedToChatUpdate.map(mapper).update, is(botAddedToChatUpdate));
         assertThat(botStartedUpdate.map(mapper).update, is(botStartedUpdate));
+        assertThat(botStoppedUpdate.map(mapper).update, is(botStoppedUpdate));
         assertThat(messageChatCreatedUpdate.map(mapper).update, is(messageChatCreatedUpdate));
     }
 

@@ -52,6 +52,11 @@ public class FailByDefaultUpdateMapper<T> implements Update.Mapper<T> {
     }
 
     @Override
+    public T map(BotStoppedUpdate model) {
+        return fail();
+    }
+
+    @Override
     public T map(ChatTitleChangedUpdate model) {
         return fail();
     }
