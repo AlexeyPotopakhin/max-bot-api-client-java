@@ -25,6 +25,11 @@ public class FailByDefaultButtonVisitor implements Button.Visitor {
     }
 
     @Override
+    public void visit(MessageButton model) {
+        shouldNotHappens();
+    }
+
+    @Override
     public void visit(ChatButton model) {
         shouldNotHappens();
     }

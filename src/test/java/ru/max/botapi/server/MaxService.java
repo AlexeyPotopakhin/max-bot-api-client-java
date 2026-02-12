@@ -21,57 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import ru.max.botapi.client.MaxSerializer;
 import ru.max.botapi.exceptions.SerializationException;
-import ru.max.botapi.model.ActionRequestBody;
-import ru.max.botapi.model.Attachment;
-import ru.max.botapi.model.AudioAttachment;
-import ru.max.botapi.model.BotInfo;
-import ru.max.botapi.model.CallbackButton;
-import ru.max.botapi.model.Chat;
-import ru.max.botapi.model.ChatAdmin;
-import ru.max.botapi.model.ChatAdminPermission;
-import ru.max.botapi.model.ChatAdminsList;
-import ru.max.botapi.model.ChatList;
-import ru.max.botapi.model.ChatMember;
-import ru.max.botapi.model.ChatMembersList;
-import ru.max.botapi.model.ChatPatch;
-import ru.max.botapi.model.ChatStatus;
-import ru.max.botapi.model.ChatType;
-import ru.max.botapi.model.ContactAttachment;
-import ru.max.botapi.model.ContactAttachmentPayload;
-import ru.max.botapi.model.FileAttachment;
-import ru.max.botapi.model.FileAttachmentPayload;
-import ru.max.botapi.model.GetPinnedMessageResult;
-import ru.max.botapi.model.GetSubscriptionsResult;
-import ru.max.botapi.model.Image;
-import ru.max.botapi.model.InlineKeyboardAttachment;
-import ru.max.botapi.model.Keyboard;
-import ru.max.botapi.model.LinkButton;
-import ru.max.botapi.model.LinkedMessage;
-import ru.max.botapi.model.LocationAttachment;
-import ru.max.botapi.model.MediaAttachmentPayload;
-import ru.max.botapi.model.Message;
-import ru.max.botapi.model.MessageBody;
-import ru.max.botapi.model.MessageLinkType;
-import ru.max.botapi.model.MessageStat;
-import ru.max.botapi.model.PhotoAttachment;
-import ru.max.botapi.model.PhotoAttachmentPayload;
-import ru.max.botapi.model.PinMessageBody;
-import ru.max.botapi.model.Recipient;
-import ru.max.botapi.model.RequestContactButton;
-import ru.max.botapi.model.RequestGeoLocationButton;
-import ru.max.botapi.model.ShareAttachment;
-import ru.max.botapi.model.ShareAttachmentPayload;
-import ru.max.botapi.model.SimpleQueryResult;
-import ru.max.botapi.model.StickerAttachment;
-import ru.max.botapi.model.StickerAttachmentPayload;
-import ru.max.botapi.model.Subscription;
-import ru.max.botapi.model.SubscriptionRequestBody;
-import ru.max.botapi.model.UploadEndpoint;
-import ru.max.botapi.model.UploadType;
-import ru.max.botapi.model.User;
-import ru.max.botapi.model.VideoAttachment;
-import ru.max.botapi.model.VideoAttachmentDetails;
-import ru.max.botapi.model.VideoUrls;
+import ru.max.botapi.model.*;
 import spark.Request;
 import spark.Response;
 
@@ -96,6 +46,7 @@ public class MaxService {
             new ContactAttachmentPayload().vcfInfo("vcfInfo"));
     public static final CallbackButton CALLBACK_BUTTON = new CallbackButton("payload", "text");
     public static final RequestContactButton REQUEST_CONTACT_BUTTON = new RequestContactButton("request contact");
+    public static final MessageButton MESSAGE_BUTTON = new MessageButton("message");
     public static final RequestGeoLocationButton REQUEST_GEO_LOCATION_BUTTON = new RequestGeoLocationButton(
             "request location");
     public static final LinkButton LINK_BUTTON = new LinkButton("https://mail.ru", "link");
@@ -103,7 +54,7 @@ public class MaxService {
             new Keyboard(
             Arrays.asList(
                     Collections.singletonList(CALLBACK_BUTTON),
-                    Arrays.asList(REQUEST_CONTACT_BUTTON, REQUEST_GEO_LOCATION_BUTTON),
+                    Arrays.asList(REQUEST_CONTACT_BUTTON, MESSAGE_BUTTON, REQUEST_GEO_LOCATION_BUTTON),
                     Arrays.asList(LINK_BUTTON)
             )));
     public static final StickerAttachment STICKER_ATTACHMENT = new StickerAttachment(new StickerAttachmentPayload("code",

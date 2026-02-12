@@ -30,25 +30,7 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
-import ru.max.botapi.model.Attachment;
-import ru.max.botapi.model.AudioAttachment;
-import ru.max.botapi.model.Button;
-import ru.max.botapi.model.CallbackButton;
-import ru.max.botapi.model.ContactAttachment;
-import ru.max.botapi.model.FailByDefaultAttachmentVisitor;
-import ru.max.botapi.model.FailByDefaultButtonVisitor;
-import ru.max.botapi.model.FileAttachment;
-import ru.max.botapi.model.InlineKeyboardAttachment;
-import ru.max.botapi.model.LinkButton;
-import ru.max.botapi.model.LocationAttachment;
-import ru.max.botapi.model.Message;
-import ru.max.botapi.model.MessageList;
-import ru.max.botapi.model.PhotoAttachment;
-import ru.max.botapi.model.RequestContactButton;
-import ru.max.botapi.model.RequestGeoLocationButton;
-import ru.max.botapi.model.ShareAttachment;
-import ru.max.botapi.model.StickerAttachment;
-import ru.max.botapi.model.VideoAttachment;
+import ru.max.botapi.model.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -160,6 +142,11 @@ public class GetMessagesQueryTest extends UnitTestBase {
                             @Override
                             public void visit(RequestContactButton model) {
                                 assertThat(model, is(REQUEST_CONTACT_BUTTON));
+                            }
+
+                            @Override
+                            public void visit(MessageButton model) {
+                                assertThat(model, is(MESSAGE_BUTTON));
                             }
                         });
                     }

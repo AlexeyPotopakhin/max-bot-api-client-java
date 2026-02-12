@@ -11,38 +11,7 @@ import org.junit.Test;
 
 import ru.max.botapi.MaxIntegrationTest;
 import ru.max.botapi.exceptions.APIException;
-import ru.max.botapi.model.AttachmentRequest;
-import ru.max.botapi.model.AudioAttachment;
-import ru.max.botapi.model.AudioAttachmentRequest;
-import ru.max.botapi.model.Button;
-import ru.max.botapi.model.CallbackButton;
-import ru.max.botapi.model.Chat;
-import ru.max.botapi.model.ChatButton;
-import ru.max.botapi.model.ChatType;
-import ru.max.botapi.model.ContactAttachmentRequest;
-import ru.max.botapi.model.ContactAttachmentRequestPayload;
-import ru.max.botapi.model.InlineKeyboardAttachmentRequest;
-import ru.max.botapi.model.InlineKeyboardAttachmentRequestPayload;
-import ru.max.botapi.model.Intent;
-import ru.max.botapi.model.LinkButton;
-import ru.max.botapi.model.Message;
-import ru.max.botapi.model.MessageLinkType;
-import ru.max.botapi.model.MessageList;
-import ru.max.botapi.model.NewMessageBody;
-import ru.max.botapi.model.NewMessageLink;
-import ru.max.botapi.model.PhotoAttachment;
-import ru.max.botapi.model.PhotoAttachmentRequest;
-import ru.max.botapi.model.PhotoAttachmentRequestPayload;
-import ru.max.botapi.model.RequestContactButton;
-import ru.max.botapi.model.RequestGeoLocationButton;
-import ru.max.botapi.model.SendMessageResult;
-import ru.max.botapi.model.ShareAttachment;
-import ru.max.botapi.model.StickerAttachment;
-import ru.max.botapi.model.StickerAttachmentRequest;
-import ru.max.botapi.model.StickerAttachmentRequestPayload;
-import ru.max.botapi.model.UploadType;
-import ru.max.botapi.model.UploadedInfo;
-import ru.max.botapi.model.UserWithPhoto;
+import ru.max.botapi.model.*;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -149,6 +118,9 @@ public class SendMessageQueryIntegrationTest extends MaxIntegrationTest {
                 ),
                 Collections.singletonList(
                         new RequestContactButton("contact")
+                ),
+                Collections.singletonList(
+                        new MessageButton("message")
                 ),
                 Collections.singletonList(
                         new RequestGeoLocationButton("geo location").quick(true)

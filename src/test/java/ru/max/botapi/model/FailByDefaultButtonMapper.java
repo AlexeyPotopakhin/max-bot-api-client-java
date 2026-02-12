@@ -25,6 +25,11 @@ public class FailByDefaultButtonMapper<T> implements Button.Mapper<T> {
     }
 
     @Override
+    public T map(MessageButton model) {
+        return shouldNotHappens();
+    }
+
+    @Override
     public T map(ChatButton model) {
         return shouldNotHappens();
     }
