@@ -23,9 +23,9 @@ import ru.max.botapi.model.VideoAttachmentRequest;
 public class SendVideoMessageQueryIntegrationTest extends MaxIntegrationTest {
     @Test
     public void shouldSendVideo() throws Exception {
-        String uploadUrl = getUploadUrl(UploadType.VIDEO);
+        UploadEndpoint uploadEndpoint = getUploadEndpoint(UploadType.VIDEO);
         File file = new File(getClass().getClassLoader().getResource("test.mp4").toURI());
-        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadUrl, file).execute();
+        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadEndpoint, file).execute();
         AttachmentRequest attach = new VideoAttachmentRequest(uploadedInfo);
         NewMessageBody newMessage = new NewMessageBody(null, Collections.singletonList(attach), null);
         send(newMessage, getChatsForSend());
@@ -35,7 +35,7 @@ public class SendVideoMessageQueryIntegrationTest extends MaxIntegrationTest {
     public void shouldSendAnyAccessibleVideoUsingToken() throws Exception {
         UploadEndpoint uploadEndpoint = botAPI.getUploadUrl(UploadType.VIDEO).execute();
         File videoFile = new File(getClass().getClassLoader().getResource("test.mp4").toURI());
-        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadEndpoint.getUrl(), videoFile).execute();
+        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadEndpoint, videoFile).execute();
         AttachmentRequest request = new VideoAttachmentRequest(uploadedInfo);
         NewMessageBody newMessage = new NewMessageBody(null, Collections.singletonList(request), null);
         List<Chat> chats = getChats();

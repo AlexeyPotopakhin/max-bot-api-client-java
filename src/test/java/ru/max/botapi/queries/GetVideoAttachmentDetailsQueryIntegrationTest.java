@@ -7,16 +7,7 @@ import org.junit.Test;
 
 import ru.max.botapi.MaxIntegrationTest;
 import ru.max.botapi.exceptions.BadRequestException;
-import ru.max.botapi.model.AttachmentRequest;
-import ru.max.botapi.model.Chat;
-import ru.max.botapi.model.NewMessageBody;
-import ru.max.botapi.model.SendMessageResult;
-import ru.max.botapi.model.UploadType;
-import ru.max.botapi.model.UploadedInfo;
-import ru.max.botapi.model.VideoAttachment;
-import ru.max.botapi.model.VideoAttachmentDetails;
-import ru.max.botapi.model.VideoAttachmentRequest;
-import ru.max.botapi.model.VideoUrls;
+import ru.max.botapi.model.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -28,9 +19,9 @@ public class GetVideoAttachmentDetailsQueryIntegrationTest extends MaxIntegratio
     @Test
     public void shouldReturnDetails() throws Exception {
         Chat chat = getByTitle(getChats(), "GetVideoAttachmentDetailsQueryIntegrationTest");
-        String uploadUrl = getUploadUrl(UploadType.VIDEO);
+        UploadEndpoint uploadEndpoint = getUploadEndpoint(UploadType.VIDEO);
         File file = new File(getClass().getClassLoader().getResource("test.mp4").toURI());
-        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadUrl, file).execute();
+        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadEndpoint, file).execute();
         AttachmentRequest attach = new VideoAttachmentRequest(uploadedInfo);
         NewMessageBody newMessage = new NewMessageBody(null, Collections.singletonList(attach), null);
         SendMessageResult result = doSend(newMessage, chat.getChatId());

@@ -22,6 +22,7 @@ import ru.max.botapi.exceptions.APIException;
 import ru.max.botapi.exceptions.ClientException;
 import ru.max.botapi.model.PhotoToken;
 import ru.max.botapi.model.PhotoTokens;
+import ru.max.botapi.model.UploadEndpoint;
 import ru.max.botapi.model.UploadedInfo;
 import ru.max.botapi.queries.UnitTestBase;
 import ru.max.botapi.queries.upload.MaxUploadAVQuery;
@@ -136,21 +137,26 @@ public class MaxUploadAPITest extends UnitTestBase {
     public void uploadAV() throws Exception {
         String fileName = "test.mp4";
         InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
-        UploadedInfo uploadedFileInfo = uploadAPI.uploadAV(AV_UPLOAD_URL, fileName, is).execute();
-        assertThat(uploadedFileInfo.getToken(), is(notNullValue()));
+        String token = "test_token";
+        UploadEndpoint uploadEndpoint = new UploadEndpoint(AV_UPLOAD_URL).token(token);
+        UploadedInfo uploadedFileInfo = uploadAPI.uploadAV(uploadEndpoint, fileName, is).execute();
+        assertThat(uploadedFileInfo.getToken(), is(token));
     }
 
     @Test
     public void uploadAV1() throws Exception {
         File file = new File(getClass().getClassLoader().getResource("test.mp4").toURI());
-        UploadedInfo uploadedFileInfo = uploadAPI.uploadAV(AV_UPLOAD_URL, file).execute();
-        assertThat(uploadedFileInfo.getToken(), is(notNullValue()));
+        String token = "test_token";
+        UploadEndpoint uploadEndpoint = new UploadEndpoint(AV_UPLOAD_URL).token(token);
+        UploadedInfo uploadedFileInfo = uploadAPI.uploadAV(uploadEndpoint, file).execute();
+        assertThat(uploadedFileInfo.getToken(), is(token));
     }
 
     @Test(expected = ClientException.class)
     public void shoudlFail() throws Exception {
         File file = new File(getClass().getClassLoader().getResource("test.png").toURI());
-        MaxUploadQuery<UploadedInfo> query = new MaxUploadAVQuery(invalidClient, "https://url", file);
+        UploadEndpoint uploadEndpoint = new UploadEndpoint("https://url");
+        MaxUploadQuery<UploadedInfo> query = new MaxUploadAVQuery(invalidClient, uploadEndpoint, file);
         query.execute();
     }
 }

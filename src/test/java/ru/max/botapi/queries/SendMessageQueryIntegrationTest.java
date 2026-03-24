@@ -186,9 +186,9 @@ public class SendMessageQueryIntegrationTest extends MaxIntegrationTest {
 
     @Test
     public void shouldSendAudio() throws Exception {
-        String uploadUrl = getUploadUrl(UploadType.AUDIO);
+        UploadEndpoint uploadEndpoint = getUploadEndpoint(UploadType.AUDIO);
         File file = new File(getClass().getClassLoader().getResource("test.m4a").toURI());
-        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadUrl, file).execute();
+        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadEndpoint, file).execute();
         AttachmentRequest request = new AudioAttachmentRequest(uploadedInfo);
         NewMessageBody newMessage = new NewMessageBody(null, Collections.singletonList(request), null);
         send(newMessage);
@@ -196,9 +196,9 @@ public class SendMessageQueryIntegrationTest extends MaxIntegrationTest {
 
     @Test
     public void shouldSendAudioReusingId() throws Exception {
-        String uploadUrl = getUploadUrl(UploadType.AUDIO);
+        UploadEndpoint uploadEndpoint = getUploadEndpoint(UploadType.AUDIO);
         File file = new File(getClass().getClassLoader().getResource("test.m4a").toURI());
-        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadUrl, file).execute();
+        UploadedInfo uploadedInfo = uploadAPI.uploadAV(uploadEndpoint, file).execute();
         AttachmentRequest request = new AudioAttachmentRequest(uploadedInfo);
         NewMessageBody newMessage = new NewMessageBody(null, Collections.singletonList(request), null);
         List<Message> createdMessages = send(newMessage);

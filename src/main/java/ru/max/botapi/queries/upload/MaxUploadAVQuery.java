@@ -22,16 +22,49 @@ package ru.max.botapi.queries.upload;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import ru.max.botapi.client.MaxClient;
+import ru.max.botapi.exceptions.APIException;
+import ru.max.botapi.exceptions.ClientException;
+import ru.max.botapi.model.UploadEndpoint;
 import ru.max.botapi.model.UploadedInfo;
 
 public class MaxUploadAVQuery extends MaxUploadQuery<UploadedInfo> {
-    public MaxUploadAVQuery(MaxClient maxClient, String url, File file) {
-        super(maxClient, UploadedInfo.class, url, file);
+
+    private final MaxClient maxClient;
+    private final UploadEndpoint uploadEndpoint;
+
+    public MaxUploadAVQuery(MaxClient maxClient, UploadEndpoint uploadEndpoint, File file) {
+        super(maxClient, UploadedInfo.class, uploadEndpoint.getUrl(), file);
+        this.uploadEndpoint = uploadEndpoint;
+        this.maxClient = maxClient;
     }
 
-    public MaxUploadAVQuery(MaxClient maxClient, String url, String fileName, InputStream input) {
-        super(maxClient, UploadedInfo.class, url, fileName, input);
+    public MaxUploadAVQuery(MaxClient maxClient, UploadEndpoint uploadEndpoint, String fileName, InputStream input) {
+        super(maxClient, UploadedInfo.class, uploadEndpoint.getUrl(), fileName, input);
+        this.uploadEndpoint = uploadEndpoint;
+        this.maxClient = maxClient;
+    }
+
+    @Override
+    public UploadedInfo execute() throws APIException, ClientException {
+        try {
+            return maxClient.newCall(this).get();
+        } catch (InterruptedException e) {
+            throw new ClientException("Current upload AV request was interrupted", e);
+        } catch (ExecutionException e) {
+            return unwrap(e);
+        }
+    }
+
+    @Override
+    public Future<UploadedInfo> enqueue() throws ClientException {
+        return maxClient.newCall(this);
+    }
+
+    public UploadedInfo getUploadedInfo() {
+        return new UploadedInfo().token(uploadEndpoint.getToken());
     }
 }

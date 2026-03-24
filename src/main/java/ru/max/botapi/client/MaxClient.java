@@ -43,8 +43,10 @@ import ru.max.botapi.exceptions.SerializationException;
 import ru.max.botapi.exceptions.ServiceNotAvailableException;
 import ru.max.botapi.exceptions.TransportClientException;
 import ru.max.botapi.model.Error;
+import ru.max.botapi.model.UploadedInfo;
 import ru.max.botapi.queries.QueryParam;
 import ru.max.botapi.queries.MaxQuery;
+import ru.max.botapi.queries.upload.MaxUploadAVQuery;
 import ru.max.botapi.queries.upload.MaxUploadQuery;
 
 import org.slf4j.Logger;
@@ -100,6 +102,15 @@ public class MaxClient implements Closeable {
             String url = buildURL(query);
             Future<ClientResponse> call = query.getUploadExec().newCall(getTransport());
             return new FutureResult<>(call, rawResponse -> handleResponse(rawResponse, query, url));
+        } catch (InterruptedException e) {
+            throw new ClientException(e);
+        }
+    }
+
+    public Future<UploadedInfo> newCall(MaxUploadAVQuery query) throws ClientException {
+        try {
+            Future<ClientResponse> call = query.getUploadExec().newCall(getTransport());
+            return new FutureResult<>(call, rawResponse -> handleResponse(rawResponse, query));
         } catch (InterruptedException e) {
             throw new ClientException(e);
         }
@@ -210,6 +221,40 @@ public class MaxClient implements Closeable {
         }
 
         LOG.error("Error while executing query, query url: {}, query body: {}, responseBody: {}",
+                url,
+                query.getBody(),
+                responseBody);
+
+        Error error;
+        try {
+            error = serializer.deserialize(responseBody, Error.class);
+        } catch (SerializationException e) {
+            throw new APIException(response.getStatusCode(), responseBody);
+        }
+
+        if (error == null) {
+            throw new APIException(response.getStatusCode());
+        }
+
+        throw ExceptionMapper.map(response.getStatusCode(), error);
+    }
+
+    private UploadedInfo handleResponse(ClientResponse response, MaxUploadAVQuery query) throws ClientException, APIException {
+        String url = buildURL(query);
+        String responseBody = response.getBodyAsString();
+        if (response.getStatusCode() == 503) {
+            LOG.error("Error 503 while executing upload AV query, query url: {}, query body: {}, responseBody: {}",
+                    url,
+                    query.getBody(),
+                    responseBody);
+            throw new ServiceNotAvailableException(responseBody);
+        }
+
+        if (response.getStatusCode() / 100 == 2) {
+            return query.getUploadedInfo();
+        }
+
+        LOG.error("Error while executing upload AV query, query url: {}, query body: {}, responseBody: {}",
                 url,
                 query.getBody(),
                 responseBody);

@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import ru.max.botapi.client.MaxClient;
+import ru.max.botapi.model.UploadEndpoint;
 import ru.max.botapi.queries.upload.MaxUploadAVQuery;
 import ru.max.botapi.queries.upload.MaxUploadFileQuery;
 import ru.max.botapi.queries.upload.MaxUploadImageQuery;
@@ -53,11 +54,11 @@ public class MaxUploadAPI {
         return new MaxUploadImageQuery(client, url, fileName, inputStream);
     }
 
-    public MaxUploadAVQuery uploadAV(String url, File file) {
-        return new MaxUploadAVQuery(client, url, file);
+    public MaxUploadAVQuery uploadAV(UploadEndpoint uploadEndpoint, File file) {
+        return new MaxUploadAVQuery(client, uploadEndpoint, file);
     }
 
-    public MaxUploadAVQuery uploadAV(String url, String fileName, InputStream inputStream) {
-        return new MaxUploadAVQuery(client, url, fileName, inputStream);
+    public MaxUploadAVQuery uploadAV(UploadEndpoint uploadEndpoint, String fileName, InputStream inputStream) {
+        return new MaxUploadAVQuery(client, uploadEndpoint, fileName, inputStream);
     }
 }

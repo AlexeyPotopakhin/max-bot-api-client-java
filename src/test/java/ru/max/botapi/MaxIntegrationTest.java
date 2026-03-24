@@ -420,6 +420,10 @@ public abstract class MaxIntegrationTest {
         return "http:" + url;
     }
 
+    protected UploadEndpoint getUploadEndpoint(UploadType uploadType) throws Exception {
+        return botAPI.getUploadUrl(uploadType).execute();
+    }
+
     protected String randomText() {
         return getClass().getSimpleName() + "\n" + UUID.randomUUID().toString();
     }
