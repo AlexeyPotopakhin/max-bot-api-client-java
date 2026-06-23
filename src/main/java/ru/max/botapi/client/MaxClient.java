@@ -20,6 +20,18 @@
 
 package ru.max.botapi.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.max.botapi.client.impl.JacksonSerializer;
+import ru.max.botapi.client.impl.OkHttpTransportClient;
+import ru.max.botapi.exceptions.*;
+import ru.max.botapi.model.Error;
+import ru.max.botapi.model.UploadedInfo;
+import ru.max.botapi.queries.MaxQuery;
+import ru.max.botapi.queries.QueryParam;
+import ru.max.botapi.queries.upload.MaxUploadAVQuery;
+import ru.max.botapi.queries.upload.MaxUploadQuery;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -31,26 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Future;
-
-import ru.max.botapi.Version;
-import ru.max.botapi.client.impl.JacksonSerializer;
-import ru.max.botapi.client.impl.OkHttpTransportClient;
-import ru.max.botapi.exceptions.APIException;
-import ru.max.botapi.exceptions.ClientException;
-import ru.max.botapi.exceptions.ExceptionMapper;
-import ru.max.botapi.exceptions.RequiredParameterMissingException;
-import ru.max.botapi.exceptions.SerializationException;
-import ru.max.botapi.exceptions.ServiceNotAvailableException;
-import ru.max.botapi.exceptions.TransportClientException;
-import ru.max.botapi.model.Error;
-import ru.max.botapi.model.UploadedInfo;
-import ru.max.botapi.queries.QueryParam;
-import ru.max.botapi.queries.MaxQuery;
-import ru.max.botapi.queries.upload.MaxUploadAVQuery;
-import ru.max.botapi.queries.upload.MaxUploadQuery;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MaxClient implements Closeable {
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -166,8 +158,6 @@ public class MaxClient implements Closeable {
         } else {
             sb.append('&');
         }
-
-        sb.append("v=").append(Version.get());
 
         List<QueryParam<?>> params = query.getParams();
         if (params == null) {
