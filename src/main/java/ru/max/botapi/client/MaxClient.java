@@ -54,12 +54,16 @@ public class MaxClient implements Closeable {
     private final String endpoint;
     private final Map<String, String> headers;
 
-    public MaxClient(String accessToken, MaxTransportClient transport, MaxSerializer serializer) {
-        this.endpoint = createEndpoint();
+    public MaxClient(String accessToken, String endpoint, MaxTransportClient transport, MaxSerializer serializer) {
+        this.endpoint = createEndpoint(endpoint);
         this.accessToken = Objects.requireNonNull(accessToken, "accessToken");
         this.transport = Objects.requireNonNull(transport, "transport");
         this.serializer = Objects.requireNonNull(serializer, "serializer");
         this.headers = Collections.singletonMap("Authorization", accessToken);
+    }
+
+    public MaxClient(String accessToken, MaxTransportClient transport, MaxSerializer serializer) {
+        this(accessToken, null, transport, serializer);
     }
 
     public static MaxClient create(String accessToken) {
@@ -263,7 +267,11 @@ public class MaxClient implements Closeable {
         throw ExceptionMapper.map(response.getStatusCode(), error);
     }
 
-    private String createEndpoint() {
+    private String createEndpoint(String endpoint) {
+        if (endpoint != null && !endpoint.isEmpty()) {
+            return endpoint;
+        }
+
         String env = getEnvironment(ENDPOINT_ENV_VAR_NAME);
         if (env != null) {
             return env;
